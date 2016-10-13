@@ -8,8 +8,26 @@ header {
     height: 400px;
 }
 
+body{
+    font-family: Lato, Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    height: 18px;
+}
+
 h1, h2, h3 {
+    font-family: Raleway, Helvetica Neue, Helvetica, Arial, sans-serif;
     margin-top: 0px;
+    margin-bottom: .5rem;
+}
+
+h1{
+    font-weight: 100;
+}
+
+p{
+    line-height: 1.43;
+    margin-top: 0px;
+    margin-bottom: 1rem;
 }
 
 .sub-heading {
@@ -19,9 +37,9 @@ h1, h2, h3 {
 .get-yours-link {
     display: inline-block;
     padding: 5px;
-    background-color: brown;   
+    background-color: #814236;   
     color: white;   
-    border: 1px solid black;
+    border: 1px solid #391D18;
 }
 
 .get-yours-link:hover {
@@ -67,6 +85,7 @@ h1, h2, h3 {
 
 .features-section h2 {
     text-align: center;
+    font-variant: small-caps;
 }
 
 .feature {
@@ -81,6 +100,7 @@ h1, h2, h3 {
 
 .feature svg {
     height: 50px;
+    fill: #814236;
 }
 
 @media (max-width: 768px) {
@@ -96,4 +116,33 @@ h1, h2, h3 {
     .feature-copy {
         padding-left: 60px;
     }
+}
+
+
+
+
+
+.uses-section {
+    padding: 15px 0px;
+    background-color: #EBEBEB;
+}
+
+.uses-section h2 {
+    text-align: center;
+    font-variant: small-caps;
+}
+
+.use {
+    height: 300px;
+    background-color: white;
+    text-align: center;
+    padding: 0px;
+    border: 1px solid #DFDFDF;
+    border-radius: 3px;
+    margin-bottom: 10px;
+}
+
+.use img {
+    height: 150px;
+    object-fit: cover;
 }
