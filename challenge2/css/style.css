@@ -136,7 +136,7 @@ p{
     height: 300px;
     background-color: white;
     text-align: center;
-    padding: 0px;
+    padding: 10px;
     border: 1px solid #DFDFDF;
     border-radius: 3px;
     margin-bottom: 10px;
@@ -144,5 +144,45 @@ p{
 
 .use img {
     height: 150px;
-    object-fit: cover;
+}
+
+
+
+
+
+
+.testimonials-section {
+    padding: 15px 0px;
+    background-color: #F8F8F8;
+}
+
+.testimonials-section h2 {
+    text-align: center;
+    font-variant: small-caps;
+}
+
+.testimonial {
+    text-align: left;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.testimonial img {
+    border-radius: 50%;
+    float: left;
+}
+
+@media (max-width: 768px) {
+    .testimonial {
+        text-align: left;
+        height: auto;
+    }
+
+    .testimonial svg {
+        float: left;
+    }
+
+    .testimonial-copy {
+        padding-left: 60px;
+    }
 }
