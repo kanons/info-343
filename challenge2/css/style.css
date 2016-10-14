@@ -22,6 +22,7 @@ h1, h2, h3 {
 
 h1{
     font-weight: 100;
+    font-size: 80px;
 }
 
 p{
@@ -32,6 +33,7 @@ p{
 
 .sub-heading {
     width: 50%;
+    font-size: 30px;
 }
 
 .get-yours-link {
@@ -89,7 +91,7 @@ p{
 }
 
 .feature {
-    height: 300px;
+    height: 250px;
     background-color: white;
     text-align: center;
     padding: 10px;
@@ -135,7 +137,7 @@ p{
 .use {
     height: 300px;
     background-color: white;
-    text-align: center;
+    text-align: left;
     padding: 10px;
     border: 1px solid #DFDFDF;
     border-radius: 3px;
@@ -144,6 +146,16 @@ p{
 
 .use img {
     height: 150px;
+    
+}
+
+@media (max-width: 992px) {
+    .use{
+        text-align: left;
+        height: auto;
+    }
+
+    
 }
 
 
@@ -172,6 +184,15 @@ p{
     float: left;
 }
 
+.testimonial-copy {
+        padding-left: 100px;
+    }
+
+.testimonial span {
+       font-size: 80%;
+       color: #999999;
+   }
+
 @media (max-width: 768px) {
     .testimonial {
         text-align: left;
@@ -182,7 +203,22 @@ p{
         float: left;
     }
 
-    .testimonial-copy {
-        padding-left: 60px;
-    }
+    
+}
+
+
+
+
+.bottom-footer{
+    width: 100%;
+}
+
+footer {
+    background-size: 100%;
+    background-color: #391D18;
+    color: #EEEEEE;
+}
+
+fa fa-envelope {
+    color: wihte;
 }
