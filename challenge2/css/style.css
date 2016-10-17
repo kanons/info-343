@@ -9,13 +9,13 @@ header {
 }
 
 body{
-    font-family: Lato, Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 300;
-    height: 18px;
+    font-size: 18px;
 }
 
 h1, h2, h3 {
-    font-family: Raleway, Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin-top: 0px;
     margin-bottom: .5rem;
 }
