@@ -10,7 +10,7 @@ After cloning this repo, run the following commands (you only need to do this on
 
 ```bash
 cd challenges
-git remote add upstream git@github.com:info343e-au16/challenges.git
+git remote add upstream https://github.com/info343e-au16/challenges.git
 ```
 
 This will register the upstream `challenges` repo (where the teaching team will commit the starter code for each challenge) as a `remote` that you can `git pull` from.
@@ -25,14 +25,14 @@ git pull upstream master
 
 ## Working on challenges
 
-After updating your repo with the starter code for the week's challenge, create a new branch in the repo (the name will be specified in the write up) and switch to it.
+Create a new branch in the repo (the name will be specified in the write up) and switch to it, then update your repo with the starter code for the week's challenge, .
 
 ```
-# New assignment posted, update repo
-git pull upstream master
-
-# Create and switch to new branch
+# New assignment posted, create and switch to new branch
 git checkout -b files-challenge
+
+# Update repo
+git pull upstream master
 
 # cd into the folder for the challenge
 cd challenge2
@@ -50,7 +50,7 @@ git add .
 git commit -m "Files for Challenge 2"
 
 # Push your new branch to github
-git push --set-upstream origin challenge2
+git push --set-upstream origin files-challenge
 ```
 
 Go to your repo on Github, and click the "New pull request" button at the top to create a new pull request.
