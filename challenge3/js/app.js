@@ -7,53 +7,59 @@ var report = document.querySelector("#report");
 //ONLY STAR WARS: Extract Star Wars Movies
 var starWars = MOVIES.filter(function (movie) {
     var title = movie.title.toLowerCase();
-    if(title.includes("star wars")==true) {return movie;}
+    if(title.includes("star wars") === true) {return movie;}
 });
 
 //ONLY STAR WARS: Sort by Title
-starWars.sort(function (a, b){
-    return a.toString().localeCompare(b);
+starWars.sort(function (a, b) {
+    return a.title.toString().localeCompare(b.title);
 });
 
 //RE-RELEASED TWENTIETH CENTURY MOVIES: Extract rereleased movies
-var rerelease = MOVIES.filter(function (movie){
+var rerelease = MOVIES.filter(function (movie) {
     var substr = movie.released.substr(0, 10);
     if(movie.released <= "2000-01-01") {return movie;}
 });
 
 //RE-RELEASED TWENTIETH CENTURY MOVIES: Sort rerelease by released and year
-rerelease.sort(function(a,b){
-    if(a.released != b.released){
+rerelease.sort(function(a,b) {
+    if(a.released != b.released) {
         if(a.released < b.released) {return -1}
         else {return 1;}
-    }else{
+    }else {
         return a.year - b.year;
     }
 });
 
-//AVERAGE SALES BY GENRE: Create Object array of genre and average sales
+//AVERAGE SALES BY GENRE
 //Referred to link below to create object of sales sum by genre and number of movies per genre:
 //https://egghead.io/lessons/javascript-array-prototype-reduce-in-javascript-by-example
+//Create object with set of genre and average sales
 var genreSalesSum = MOVIES.reduce(function (genreGroup, movie) {
     if(!genreGroup[movie.genre]) {genreGroup[movie.genre] = 0;}
     genreGroup[movie.genre] += movie.sales;
     return genreGroup;
 }, {});
 
+//AVERAGE SALES BY GENRE: Create object with sum of sales for each genre
 var genreMovieNum = MOVIES.reduce(function (genreGroup, movie) {
     if(!genreGroup[movie.genre]) {genreGroup[movie.genre] = 0;}
     genreGroup[movie.genre]++;
     return genreGroup;
 }, {});
 
+//AVERAGE SALES BY GENRE: Create array of sum of sales per genre
 var genre = Object.keys(genreSalesSum);
 var sum = Object.keys(genreSalesSum).map(function(key) {
     return genreSalesSum[key];
 });
+
+//AVERAGE SALES BY GENRE: Create array of number of movies per genre
 var num = Object.keys(genreMovieNum).map(function(key) {
     return genreMovieNum[key];
 });
 
+//AVERAGE SALES BY GENRE: Calculate and formats average sales and put into object array
 var genreAverageSales = [];
 for(var i=0; i<genre.length; i++){
     var avg = numeral(sum[i]/num[i]).format('$0,0.00');
@@ -63,18 +69,50 @@ for(var i=0; i<genre.length; i++){
     })
 }
 
-genreAverageSales = genreAverageSales.filter(function(obj) {
-    return obj.genre !== '';
+//AVERAGE SALES BY GENRE: Remove blank genre
+genreAverageSales = genreAverageSales.filter(function(movie) {
+    return movie.genre !== '';
 });
 
-//BUILDING TABLE: Create elements needed for Star Wars and Rerelease Tables
+//AVERAGE SALES BY GENRE: Sort alphabetically by genre
+genreAverageSales.sort(function (a, b){
+    var a = numeral().unformat(a.average);
+    var b = numeral().unformat(b.average);
+    return b - a;
+});
+
+//TOP 100 MOVIES BY TICKETS SOLD: Calculate sum of tickets for each distinct movie and sort into array
+//http://stackoverflow.com/questions/21819819/summarize-array-of-objects-and-calculate-average-value-for-each-unique-object-na
+function sumTickets(movies) {
+    var sum = {}, results = [], title;
+    for (var i=0; i<movies.length; i++) {
+        title = movies[i].title;
+        if (!(title in sum)) {
+            sum[title] = 0;
+        }
+        sum[title] += movies[i].tickets;
+    }
+
+    for(title in sum) {  
+        results.push({ title: title, tickets: numeral(sum[title]).format('0,0')});   
+    }
+
+    results.sort(function (a, b) {
+        return numeral().unformat(b.tickets) - numeral().unformat(a.tickets);
+    });
+    return results;
+}
+
+//TOP 100 MOVIES BY TICKETS SOLD: Slice 100 from array
+var topHundred = sumTickets(MOVIES).slice(0, 100);
+
+//BUILD TABLE: Create elements needed for Star Wars and Rerelease Tables
 function buildTable() {
-    // table body and table head
     var tbody = document.createElement("tbody");
     var thead = document.createElement("thead");
-    // Row for the header
+   
     var threadRow = document.createElement("tr");
-    // Columns for the header
+   
     var titleTh = document.createElement("th");
     titleTh.textContent = "Title";
     var releasedTh = document.createElement("th");
@@ -93,7 +131,7 @@ function buildTable() {
     var ticketsTh = document.createElement("th");
     ticketsTh.style.textAlign = "right";
     ticketsTh.textContent = "Tickets";
-    // Append these elements to the table
+ 
     threadRow.appendChild(titleTh);
     threadRow.appendChild(releasedTh);
     threadRow.appendChild(distributorTh);
@@ -107,7 +145,7 @@ function buildTable() {
     table.appendChild(thead);
 }
 
-//BUILDING TABLE: Create elements needed for Genre Table
+//BUILD GENRE TABLE: Create elements needed for Genre Table
 function genreTable() {
     var tbody = document.createElement("tbody");
     var thead = document.createElement("thead");
@@ -129,7 +167,7 @@ function genreTable() {
     table.appendChild(thead);
 }
 
-//BUILDING TABLE: Create elements needed for Top Movies Table
+//BUILD TOP100 TABLE: Create elements needed for Top Movies Table
 function topMoviesTable() {
     var tbody = document.createElement("tbody");
     var thead = document.createElement("thead");
@@ -141,37 +179,35 @@ function topMoviesTable() {
 
     var totalTh = document.createElement("th");
     totalTh.textContent = "Total Tickets Sold";
+    totalTh.style.textAlign = "right";
 
     threadRow.appendChild(titleTh);
-    threadRow.appendChild(totalTicketsSoldTh);
+    threadRow.appendChild(totalTh);
 
     thead.appendChild(threadRow);
     table.appendChild(tbody);
     table.appendChild(thead);
 }
 
-//BUILDING TABLE ELEMENTS FOR ALL
+//BUILD TABLE ELEMENTS FOR ALL REPORTS
 //Function to create the table elements for an array of movies.
 function buildRows(rows, e) {
-    if(e === "avg-by-genre"){
+    if(e === "avg-by-genre") {
         genreTable();
-    }else if(e === "top-by-tickets"){
+    }else if(e === "top-by-tickets") {
         topMoviesTable();
-    }else{
+    }else {
         buildTable();
     }
     var tbody = document.querySelector("tbody");
     rows.forEach(function (movie) {
-        if(e === "star-wars" || e === "20th"){
+        if(e === "star-wars" || e === "20th") { 
             format(movie);
         }
         var titleTr = document.createElement("tr");
         var titleKeys = Object.keys(movie);
         titleKeys.forEach(function (key) {
             var value = movie[key];
-            if(value === null){
-                value = '';
-            }
             var td = document.createElement("td");
             td.textContent = value;
             if(key === "sales") {td.style.textAlign = "right";}
@@ -201,7 +237,8 @@ reportSelect.addEventListener("change", function (e) {
         buildRows(genreAverageSales, value);   
     }else if (value === "top-by-tickets") {
         report.innerHTML="<h2>Top 100 Movies by Tickets Sold</h2>";
-        buildRows(topMovies, value)
+        //buildRows(topMovies, value);
+        buildRows(topHundred, value);
     }else {
         buildRows(MOVIES);
     }
@@ -213,7 +250,6 @@ function format(movie){
     movie.released = date.format('l');
 
     var tickets = movie.tickets;
-    
     movie.tickets = numeral(tickets).format('0,0');       
 
     var sales = movie.sales;
