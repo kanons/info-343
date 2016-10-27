@@ -93,7 +93,7 @@ genreAverageSales.sort(function (a, b) {
 function sumTickets(movies) {
     var sum = {}, results = [], title;
     for (var i=0; i<movies.length; i++) {
-        title = movies[i].title;
+        title = movies[i].title + " (" + moment(movies[i].release).year() + ")";
         if (!(title in sum)) {
             sum[title] = 0;
         }
