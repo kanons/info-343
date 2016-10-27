@@ -61,7 +61,7 @@ var num = Object.keys(genreMovieNum).map(function(key) {
 
 //AVERAGE SALES BY GENRE: Calculate and formats average sales and put into object array
 var genreAverageSales = [];
-for(var i=0; i<genre.length; i++){
+for(var i=0; i<genre.length; i++) {
     var avg = numeral(sum[i]/num[i]).format('$0,0.00');
     genreAverageSales.push({
         genre: genre[i],
@@ -75,7 +75,7 @@ genreAverageSales = genreAverageSales.filter(function(movie) {
 });
 
 //AVERAGE SALES BY GENRE: Sort alphabetically by genre
-genreAverageSales.sort(function (a, b){
+genreAverageSales.sort(function (a, b) {
     var a = numeral().unformat(a.average);
     var b = numeral().unformat(b.average);
     return b - a;
@@ -230,7 +230,6 @@ reportSelect.addEventListener("change", function (e) {
         buildRows(starWars, value);
     }else if (value === "20th") {
         report.innerHTML="<h2>Re-released Twentieth Century Movies</h2>";
-        
         buildRows(rerelease, value);
     }else if (value === "avg-by-genre") {
         report.innerHTML="<h2>Average Sales by Genre</h2>";
