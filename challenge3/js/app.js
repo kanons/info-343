@@ -15,6 +15,10 @@ starWars.sort(function (a, b) {
     return a.title.toString().localeCompare(b.title);
 });
 
+//ONLY STAR WARS: Create an array with formatted properties
+var onlyStarWars = [];
+format(onlyStarWars, starWars);
+
 //RE-RELEASED TWENTIETH CENTURY MOVIES: Extract rereleased movies
 var rerelease = MOVIES.filter(function (movie) {
     var substr = movie.released.substr(0, 10);
@@ -31,10 +35,13 @@ rerelease.sort(function(a,b) {
     }
 });
 
-//AVERAGE SALES BY GENRE
+//RE-RELEASED TWENTIETH CENTURY MOVIES: Create an array with formatted properties
+var rereleasedTwentieth = [];
+format(rereleasedTwentieth, rerelease);
+
+//AVERAGE SALES BY GENRE: Create object with set of genre
 //Referred to link below to create object of sales sum by genre and number of movies per genre:
 //https://egghead.io/lessons/javascript-array-prototype-reduce-in-javascript-by-example
-//Create object with set of genre and average sales
 var genreSalesSum = MOVIES.reduce(function (genreGroup, movie) {
     if(!genreGroup[movie.genre]) {genreGroup[movie.genre] = 0;}
     genreGroup[movie.genre] += movie.sales;
@@ -201,9 +208,6 @@ function buildRows(rows, e) {
     }
     var tbody = document.querySelector("tbody");
     rows.forEach(function (movie) {
-        if(e === "star-wars" || e === "20th") { 
-            format(movie);
-        }
         var titleTr = document.createElement("tr");
         var titleKeys = Object.keys(movie);
         titleKeys.forEach(function (key) {
@@ -227,30 +231,36 @@ reportSelect.addEventListener("change", function (e) {
 
     if (value === "star-wars") {
         report.innerHTML="<h2>Only Star Wars</h2>";
-        buildRows(starWars, value);
+        buildRows(onlyStarWars, value);
     }else if (value === "20th") {
         report.innerHTML="<h2>Re-released Twentieth Century Movies</h2>";
-        buildRows(rerelease, value);
+        buildRows(rereleasedTwentieth, value);
     }else if (value === "avg-by-genre") {
         report.innerHTML="<h2>Average Sales by Genre</h2>";
         buildRows(genreAverageSales, value);   
     }else if (value === "top-by-tickets") {
         report.innerHTML="<h2>Top 100 Movies by Tickets Sold</h2>";
-        //buildRows(topMovies, value);
         buildRows(topHundred, value);
     }else {
         buildRows(MOVIES);
     }
 });
 
-//Format report
-function format(movie){
-    var date = moment(new Date(movie.released));
-    movie.released = date.format('l');
-
-    var tickets = movie.tickets;
-    movie.tickets = numeral(tickets).format('0,0');       
-
-    var sales = movie.sales;
-    movie.sales = numeral(sales).format('$0,0[.]00');
+//Pushes formatted data from old array to new array
+function format(newArray, oldArray) {
+    for(i = 0; i < oldArray.length; i++) {
+    var sales = numeral(oldArray[i].sales).format('$0,0[.]00');
+    var tickets = numeral(oldArray[i].tickets).format('0,0');
+    var date = moment(new Date(oldArray[i].released)).format('l');
+    newArray.push({
+        title: oldArray[i].title,
+        released: date,
+        distributor: oldArray[i].distributor,
+        genre: oldArray[i].genre,
+        rating: oldArray[i].rating,
+        year: oldArray[i].year,
+        sales: sales,
+        tickets: tickets
+    })
+    }
 }
