@@ -14,7 +14,7 @@ firebase.auth().onAuthStateChanged(function(user) {
         var messages = database.ref('channels/general');
 
         // Get user display name to display
-        //var user = firebase.auth().currentUser;
+        var user = firebase.auth().currentUser;
         var name = user.displayName;
 
         // This event listener will be called for each item that has been added to the list.
@@ -51,7 +51,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 
             // Display profile picture
             var photoImg = document.createElement("img");
-            // photoImg.src = "https://www.gravatar.com/avatar/" + md5(user.email);
+            //photoImg.src = "https://www.gravatar.com/avatar/" + md5(user.email);
             photoImg.src = user.photoURL;
 
             // Create span element for date to span in header
@@ -60,21 +60,19 @@ firebase.auth().onAuthStateChanged(function(user) {
             displayH.appendChild(spanDate);
 
             // Create button to edit message
-            var editButton = document.createElement("button");
-            editButton.id = "edit-button";
-            editButton.type = "button";
-            editButton.class = "btn btn-link";
-            editButton.innerText = "Edit";
+            // var editButton = document.createElement("button");
+            // editButton.id = "edit-button";
+            // editButton.type = "button";
+            // editButton.class = "btn btn-link";
+            // editButton.innerText = "Edit";
 
-            // Create button to delete message
-            var deleteButton = document.createElement("button");
-            deleteButton.id = "delete-button";
-            deleteButton.type = "button";
-            deleteButton.class = "btn btn-link";
-            deleteButton.innerText = "Delete";
+            // // Create button to delete message
+            // var deleteButton = document.createElement("button");
+            // deleteButton.id = "delete-button";
+            // deleteButton.type = "button";
+            // deleteButton.class = "btn btn-link";
+            // deleteButton.innerText = "Delete";
 
-            //Append message to list
-            messagesList.appendChild(messageLi);
             //Append message content to div
             messageContent.appendChild(displayH);
             messageContent.appendChild(messageText);
@@ -83,6 +81,9 @@ firebase.auth().onAuthStateChanged(function(user) {
             messageBox.appendChild(messageContent);
             // Append message box to list item
             messageLi.appendChild(messageBox);
+            //Append message to list
+            messagesList.appendChild(messageLi);
+            
             
         });
 
@@ -126,8 +127,12 @@ messageForm.addEventListener("submit", function (e) {
     // Get the message the user entered
     var message = messageInput.value;
 
+ 
+    //var name = user.displayName;
+
     // Create a new message and add it to the list.
     messages.push({
+        username: name,
         text: message,
         timestamp: new Date().getTime() // unix timestamp in milliseconds
     })
