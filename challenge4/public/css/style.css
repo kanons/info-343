@@ -1,3 +1,45 @@
 /*
  *  This file should contain your custom style rules.
  */
+
+.alert {
+    display: none;
+}
+
+.alert.active {
+    display: block;
+}
+
+#message-input {
+    margin-bottom: 10px;
+}
+
+.container {
+    margin: 10px;
+}
+
+h2 {
+    margin: 0px;
+    font-size: 1.25em;
+}
+
+span {
+    font-size: 0.75em;
+    font-weight: normal;
+    color: gray;
+}
+
+.message-content {
+    padding-left: 10px;
+    display: inline-block;
+    vertical-align: top;
+    
+}
+
+.message-content p {
+    margin-top: 5px;
+}
+
+.message-box img {
+    align-content: left;
+}
