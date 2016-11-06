@@ -43,6 +43,8 @@ var signupPassword = document.getElementById("signup-password");
 var signupPasswordConfirm = document.getElementById("signup-password-confirm");
 var signupError = document.getElementById("signup-error");
 
+
+
 // When user signs up, create new user 
 signupForm.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -55,6 +57,11 @@ signupForm.addEventListener("submit", function (e) {
     var passwordConfirm = signupPasswordConfirm.value;
     var photoURL = "https://www.gravatar.com/avatar/" + md5(email);
 
+     console.log(displayName);
+    console.log(email);
+    console.log(password);
+    console.log(passwordConfirm);
+
     // If the password does not match, show error,
     // otherwise create user, send verification, update name and photo, go to chat.html
     if (password !== passwordConfirm) {
@@ -63,11 +70,17 @@ signupForm.addEventListener("submit", function (e) {
     } else {
         firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(function (user) {
+
+            console.log(user);
+
             // Send verification email
-            //var user = firebase.auth().currentUser;
+            var user = firebase.auth().currentUser;
+
+            console.log("In then");
 
             user.sendEmailVerification().then(function() {
                 // Email sent.
+                console.log("Email sent");
             }, function(error) {
                 // An error happened.
             });
@@ -80,6 +93,7 @@ signupForm.addEventListener("submit", function (e) {
                 photoURL: photoURL
             }).then(function() {
                 // Update successful.
+                console.log("update successful");
             }, function(error) {
                 // An error happened.
             });
