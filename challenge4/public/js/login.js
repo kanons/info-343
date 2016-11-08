@@ -5,17 +5,19 @@
  * 3. Redirect a user to chat.html once they are logged in/signed up.
  */
 
-//Store login DOM elements
+// Store login DOM elements
 var loginForm = document.getElementById("login-form");
 var loginEmail = document.getElementById("login-email");
 var loginPassword = document.getElementById("login-password");
 var loginButton = document.getElementById("login-button");
 var loginError = document.getElementById("login-error");
 
+// Boolean to keep track of whether user is logging in or signing up
+var checkLogin = true;
+
 // When the user logs in, send the email and password to firebase.
 loginForm.addEventListener("submit", function (e) {
     e.preventDefault();
-
     loginError.classList.remove('active');
 
     var email = loginEmail.value;
@@ -26,10 +28,8 @@ loginForm.addEventListener("submit", function (e) {
     // with an error object containing the error message.
     firebase.auth().signInWithEmailAndPassword(email, password)
     .then(function() {
-      console.log("Logged in successfully!");
-    })
-    .catch(function(error) {
-      console.log(error.message);
+        // User signed in successfully
+    }).catch(function(error) {
       loginError.textContent = error.message;
       loginError.classList.add('active');
     });
@@ -43,12 +43,10 @@ var signupPassword = document.getElementById("signup-password");
 var signupPasswordConfirm = document.getElementById("signup-password-confirm");
 var signupError = document.getElementById("signup-error");
 
-
-
 // When user signs up, create new user 
 signupForm.addEventListener("submit", function (e) {
     e.preventDefault();
-
+    
     signupError.classList.remove('active');
 
     var displayName = signupName.value;
@@ -56,11 +54,6 @@ signupForm.addEventListener("submit", function (e) {
     var password = signupPassword.value;
     var passwordConfirm = signupPasswordConfirm.value;
     var photoURL = "https://www.gravatar.com/avatar/" + md5(email);
-
-     console.log(displayName);
-    console.log(email);
-    console.log(password);
-    console.log(passwordConfirm);
 
     // If the password does not match, show error,
     // otherwise create user, send verification, update name and photo, go to chat.html
@@ -70,36 +63,22 @@ signupForm.addEventListener("submit", function (e) {
     } else {
         firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(function (user) {
+        
+            checkLogin = false;
 
-            console.log(user);
-
-            // Send verification email
-            var user = firebase.auth().currentUser;
-
-            console.log("In then");
-
-            user.sendEmailVerification().then(function() {
-                // Email sent.
-                console.log("Email sent");
-            }, function(error) {
-                // An error happened.
-            });
-            
-            // Update their display name and profile picture
-            //var user = firebase.auth().currentUser;
-
+            // Update display name and photo url
             user.updateProfile({
                 displayName: displayName,
                 photoURL: photoURL
             }).then(function() {
-                // Update successful.
-                console.log("update successful");
-            }, function(error) {
-                // An error happened.
-            });
+            }).catch(function(error) {});
 
-            // Redirect to chat page (dont do this until the other two actions have completed succesfully)
-            window.location.href = "chat.html";
+            // Send verification email
+            user.sendEmailVerification().then(function() {
+                window.location.href = "chat.html";
+            }).catch(function(error) {
+                window.location.href = "chat.html";
+            });
         })
         .catch(function (error) {
             signupError.textContent = error.message;
@@ -114,11 +93,11 @@ firebase.auth().onAuthStateChanged(function(user) {
   // If the user parameter is truthy,
   // the user is logged in.
   if (user) {
-      console.log("signed in");
-
-      window.location.href = "chat.html";
+      //If user is logged in (not signed up) then direct to chat
+       if(checkLogin) {
+          window.location.href = "chat.html";
+       }
   } else {
     // Otherwise, they have not signed in.
-    console.log("signed out");
   }
 });
