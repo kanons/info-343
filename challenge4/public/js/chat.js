@@ -270,7 +270,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     // If user is not verified, show alert and disable send button
     if (!user.emailVerified) {
         sendButton.disabled = true;
-        verificationAlert.textContent = "Please verify your email to send messages.";
+        verificationAlert.textContent = "Please verify your email to send messages. Refresh the page after verifying.";
         verificationAlert.classList.add('active');
     } else {
        sendButton.disabled = false;
