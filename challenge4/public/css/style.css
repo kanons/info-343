@@ -24,9 +24,18 @@ h2 {
 }
 
 span {
-    font-size: 0.75em;
+    font-size: 0.8em;
     font-weight: normal;
     color: gray;
+    margin-left: 5px;
+}
+
+#edit-button {
+    font-size: 0.8em;
+}
+
+#delete-button {
+    font-size: 0.8em;
 }
 
 .message-content {
@@ -42,4 +51,22 @@ span {
 
 .message-box img {
     align-content: left;
+}
+
+#delete-button {
+    margin-left: 10px;
+}
+
+#edit-button {
+    margin-left: 10px;
+}
+
+#edit-confirm {
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+#edit-cancel {
+    margin-left: 5px;
+    margin-top: 5px;
 }
