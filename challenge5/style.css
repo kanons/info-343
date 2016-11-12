@@ -1,0 +1,68 @@
+.weather-page {
+    margin: 15px;
+}
+
+#search-button {
+    margin-left: 10px;
+    font-size: 1rem;
+}
+
+#search-input {
+    margin: 0px;
+}
+
+#save-button {
+    display: inline;
+}
+
+.temp span {
+    color: grey;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.heading {
+    border-bottom: 1px solid lightgrey;
+    margin-left: 30px;
+}
+
+.search-bar {
+    margin-left: 30px;
+    margin-top: 30px;
+}
+
+
+.alert {
+    display: none;
+}
+
+.alert.active {
+    display: block;
+}
+
+img {
+    float: left;
+    height: 3%;
+}
+
+#list-head {
+    background-color: #efefef;
+}
+
+#saved-weather {
+    display: inline-block;
+}
+
+#saved-list {
+    margin-top: 30px;
+    margin-right: 30px;
+    margin-left: 30px;
+}
+
+#current-weather {
+    display: inline-block;
+}
+
+.current-display {
+    margin-left: 30px;
+}
