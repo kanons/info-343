@@ -33,7 +33,7 @@ class App extends React.Component {
                     </div>
                 <div className="row">  
                     <div className="col-md-6 col-xs-12" id="current-weather">
-                        <form className="search-bar" onSubmit={(e) => this.searchLocation(e)}>
+                        <form className="search-bar" onSubmit={(e) => this.onSearch(e)}>
                             <input type="text" ref="query" id="search-input" placeholder="e.g. Seattle, 98115"/>
                             <button type="submit" className="btn btn-primary btn block" id="search-button">Search</button>
                         </form>
@@ -50,19 +50,27 @@ class App extends React.Component {
                         }
                 </div>
                 <div className="col-md-6 col-xs-12" id="saved-weather">
-                    <SavedWeather
-                        saved={this.state.saved}
-                    />
+                    {
+                        this.savedLocations ? (
+                            <SavedWeather
+                                saved={this.state.saved}
+                                onClick={(location) => this.searchLocation(location)}
+                                onRemove={(location) => this.removeSaved(location)}
+                            />
+                        ):null
+                    }
                 </div>
             </div>
         </div>
         );
     }
 
-    saveLocation(location) {
+
+
+    saveLocation(name) {
         var saved = this.state.saved;
 
-        saved.push(location);
+        saved.push(name);
 
         this.setState({
             saved: saved
@@ -73,23 +81,33 @@ class App extends React.Component {
         localStorage.setItem('savedLocations', savedJson);
     }
 
-    searchLocation(e, queryValue) {
+    onSearch(e) {
         e.preventDefault();
 
         var queryValue = this.refs.query.value;
 
-        this.setState({
-            queryValue: queryValue
-        });
+        this.searchLocation(queryValue);
+    }
 
-        if(typeof queryValue === 'number'){
-            var url = "api.openweathermap.org/data/2.5/weather?zip={"+queryValue+"}&appid="+API_KEY;
+    //http://stackoverflow.com/questions/8127075/localstorage-json-how-can-i-delete-only-1-array-inside-a-key-since-localstora
+    removeSaved(location) {
+        var savedArray = JSON.parse(localStorage.getItem('savedLocations'));
+        for(var i=0; i<savedArray.length; i++) {
+            if(savedArray[i] === location) {
+                savedArray.splice(i,1);
+            }
+            localStorage.setItem("savedLocations", JSON.stringify(savedArray));
+        }
+    }
+
+    searchLocation(location) {
+
+        if(typeof location === 'number'){
+            var url = "api.openweathermap.org/data/2.5/weather?zip={"+location+"}&appid="+API_KEY;
         }else{
-            var url = "http://api.openweathermap.org/data/2.5/weather?q={" + queryValue +"}&appid="+ API_KEY;
+            var url = "http://api.openweathermap.org/data/2.5/weather?q={" +location+"}&appid="+ API_KEY;
         }
         
-
-
         fetch(url)
         .then((response) => {
             return response.json();
