@@ -1,5 +1,6 @@
 class SearchWeather extends React.Component {
     render() {
+
         return (
             <form className="search-bar" onSubmit={(e) => this.searching(e)}>
                 <input type="text" ref="query" id="search-input" placeholder="e.g. Seattle, 98115"/>
@@ -9,7 +10,8 @@ class SearchWeather extends React.Component {
     }
 
     searching(e) {
-        
-        this.props.onSearch(this.ref.query.value);
+        e.preventDefault();
+        var queryValue = this.refs.query.value;
+        this.props.onSearching(queryValue);
     }
 }
