@@ -1,14 +1,12 @@
 var API_KEY = 'da64e698782fb099e20ce1918842f33d';
 
-var error = false;
-
 class App extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            saved: []
-        };
+            saved: [],
+        }
     }
 
     componentDidMount() {
@@ -23,9 +21,6 @@ class App extends React.Component {
     }
 
     render() {
-        if(error === true){
-            return(<div id="search-alert" className="alert alert-danger" role="alert">Invalid location.</div>);
-        }
         return (
             <div className="weather-page">
                     <div className="heading">
@@ -33,31 +28,35 @@ class App extends React.Component {
                     </div>
                 <div className="row">  
                     <div className="col-md-6 col-xs-12" id="current-weather">
-                        <form className="search-bar" onSubmit={(e) => this.onSearch(e)}>
-                            <input type="text" ref="query" id="search-input" placeholder="e.g. Seattle, 98115"/>
-                            <button type="submit" className="btn btn-primary btn block" id="search-button">Search</button>
-                        </form>
+                        <SearchWeather
+                            onSearching={(queryValue) => this.onSearch(queryValue)}
+                        />
+                        <div id="search-alert" className="alert alert-danger" role="alert"></div>
                         {
-                            this.state.name ? (
                                 <CurrentWeather
+                                    saved={this.state.saved}
+                                    firstSaving={() => this.firstSaved()}
+                                    quit={this.state.quit}
+
                                     name={this.state.name}
+                                    queryValue={this.state.queryValue}
                                     icon={this.state.icon}
                                     fullDescr={this.state.fullDescr}
                                     temp={this.state.temp}
-                                    onSave={(name) => this.saveLocation(name)}
+                                    tempMax={this.state.tempMax}
+                                    tempMin={this.state.tempMin}
+                                    onSave={(queryValue) => this.saveLocation(queryValue)}
                                 />
-                            ): null
                         }
                 </div>
                 <div className="col-md-6 col-xs-12" id="saved-weather">
                     {
-                        this.savedLocations ? (
-                            <SavedWeather
-                                saved={this.state.saved}
-                                onClick={(location) => this.searchLocation(location)}
-                                onRemove={(location) => this.removeSaved(location)}
-                            />
-                        ):null
+                        <SavedWeather
+                            saved={this.state.saved}
+                            onClick={(location) => this.searchLocation(location)}
+                            onRemove={(location) => this.removeSaved(location)}
+                        />
+               
                     }
                 </div>
             </div>
@@ -65,8 +64,26 @@ class App extends React.Component {
         );
     }
 
+    firstSaved() {
+        if(this.state.saved.length!=0){
+            var savedArray = JSON.parse(localStorage.getItem('savedLocations'));
+            var firstSaved = savedArray[0];
+            this.searchLocation(firstSaved);
+        }
+    }
 
+    // Search input value location
+    onSearch(queryValue) {
+        var alert = document.getElementById("search-alert");
+        alert.classList.remove('active');
+        this.setState({
+            queryValue : queryValue
+        });
 
+        this.searchLocation(queryValue);
+    }
+
+    // Add location to location storage
     saveLocation(name) {
         var saved = this.state.saved;
 
@@ -81,39 +98,45 @@ class App extends React.Component {
         localStorage.setItem('savedLocations', savedJson);
     }
 
-    onSearch(e) {
-        e.preventDefault();
-
-        var queryValue = this.refs.query.value;
-
-        this.searchLocation(queryValue);
-    }
-
-    //http://stackoverflow.com/questions/8127075/localstorage-json-how-can-i-delete-only-1-array-inside-a-key-since-localstora
+    // Remove location from local storage
+    // http://stackoverflow.com/questions/8127075/localstorage-json-how-can-i-delete-only-1-array-inside-a-key-since-localstora
     removeSaved(location) {
         var savedArray = JSON.parse(localStorage.getItem('savedLocations'));
         for(var i=0; i<savedArray.length; i++) {
             if(savedArray[i] === location) {
                 savedArray.splice(i,1);
+                //window.localStorage.removeItem('savedLocations', savedArray[i]);
             }
-            localStorage.setItem("savedLocations", JSON.stringify(savedArray));
+            
         }
+        localStorage.setItem("savedLocations", JSON.stringify(savedArray));
     }
 
+    // Get weather information from api
     searchLocation(location) {
-
+        var alert = document.getElementById("search-alert");
+        
         if(typeof location === 'number'){
             var url = "api.openweathermap.org/data/2.5/weather?zip={"+location+"}&appid="+API_KEY;
+            var quit = false;
         }else{
             var url = "http://api.openweathermap.org/data/2.5/weather?q={" +location+"}&appid="+ API_KEY;
+            var quit = false;
+        }
+
+        if(quit){
+            return;
+        }else{
+            quit=true;
         }
         
         fetch(url)
         .then((response) => {
+            
             return response.json();
         })
         .then((json) => {
-
+            
             var getWeather = json.weather[0];
 
             var getMain = json.main;
@@ -124,6 +147,14 @@ class App extends React.Component {
 
             var temp = Math.ceil(((farenheit)/100)*100)+"°F";
 
+            var farenheitMin = ((getMain.temp_min)*(9/5))- 459.67;
+
+            var tempMin = Math.ceil(((farenheitMin)/100)*100)+"°F";
+
+            var farenheitMax = ((getMain.temp_max)*(9/5))- 459.67;
+
+            var tempMax = Math.ceil(((farenheitMax)/100)*100)+"°F";
+
             var main = getWeather.main;
 
             var descr = getWeather.description;
@@ -132,7 +163,14 @@ class App extends React.Component {
 
             var icon = "http://openweathermap.org/img/w/"+getWeather.icon+".png";
 
-
+            if(location.toLowerCase() != name.toLowerCase() && location.toString().length != 5) {
+                alert.classList.add('active');
+                alert.textContent="Invalid Location";
+                this.setState ({
+                    name: null
+                });
+                return;
+            }
 
             this.setState({
                 icon: icon,
@@ -140,9 +178,22 @@ class App extends React.Component {
                 descr: descr,
                 main: main,
                 temp: temp,
-                fullDescr: fullDescr
+                fullDescr: fullDescr,
+                quit: quit,
+                tempMin: tempMin,
+                tempMax: tempMax
             });
+            
         })
+        .catch((error) => {
+            if(!location){
+                alert.classList.add('active');
+                alert.textContent="Invalid Location";
+            }else{
+                alert.classList.add('active');
+                alert.textContent=error;
+            }
+        });
     }
 }
 
