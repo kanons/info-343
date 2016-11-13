@@ -15,10 +15,27 @@
     display: inline;
 }
 
-.temp span {
+.descr span {
     color: grey;
-    font-size: 16px;
+}
+
+.descr {
+    margin-top: 30px;
+}
+
+.temp {
+    margin-top: 5px;
+}
+
+.max {
+    margin-left: 10px;
+    font-size: 14px;
     font-weight: normal;
+    color: grey;
+}
+
+.max span {
+    margin-left: 10px;
 }
 
 .heading {
@@ -38,6 +55,11 @@
 
 .alert.active {
     display: block;
+}
+
+#search-alert {
+    margin-left: 30px;
+    margin-top: 15px;
 }
 
 img {
