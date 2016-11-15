@@ -5,7 +5,7 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            saved: [],
+            saved: []
         }
     }
 
@@ -44,6 +44,8 @@ class App extends React.Component {
                                     temp={this.state.temp}
                                     tempMax={this.state.tempMax}
                                     tempMin={this.state.tempMin}
+                                    sunrise={this.state.sunrise}
+                                    sunset={this.state.sunset}
                                     onSave={(queryValue) => this.saveLocation(queryValue)}
                                 />
                         }
@@ -55,7 +57,6 @@ class App extends React.Component {
                             onClick={(location) => this.searchLocation(location)}
                             onRemove={(location) => this.removeSaved(location)}
                         />
-               
                     }
                 </div>
             </div>
@@ -139,6 +140,44 @@ class App extends React.Component {
 
             var getMain = json.main;
 
+            var getSys = json.sys;
+
+            var sunrise = getSys.sunrise;
+
+            var sunriseTime = new Date(sunrise*1000);
+
+            var sunriseHour = sunriseTime.getHours();
+
+            if(sunriseHour.toString().length===1){
+                sunriseHour = "0"+sunriseHour;
+            }
+
+            var sunriseMinute = sunriseTime.getMinutes();
+
+            if(sunriseMinute.toString().length===1){
+                sunriseMinute = "0"+sunriseMinute;
+            }
+
+            var sunriseString = sunriseHour+":"+sunriseMinute;
+
+            var sunset = getSys.sunset;
+
+            var sunsetTime = new Date(sunset*1000);
+
+            var sunsetHour = sunsetTime.getHours();
+
+            if(sunsetHour.toString().length===1){
+                sunsetHour = "0"+sunsetHour;
+            }
+
+            var sunsetMinute = sunsetTime.getMinutes();
+
+            if(sunsetMinute.toString().length===1){
+                sunsetMinute = "0"+sunsetMinute;
+            }
+
+            var sunsetString = sunsetHour+":"+sunsetMinute;
+
             var name = json.name;
 
             var temp = Math.ceil(((getMain.temp)/100)*100)+"°F";
@@ -153,16 +192,8 @@ class App extends React.Component {
 
             var fullDescr = main+" ("+descr+")";
 
-            var icon = "http://openweathermap.org/img/w/"+getWeather.icon+".png";
 
-            if(location.toLowerCase() != name.toLowerCase() && location.toString().length != 5) {
-                alert.classList.add('active');
-                alert.textContent="Invalid Location";
-                this.setState ({
-                    name: null
-                });
-                return;
-            }
+            var icon = "http://openweathermap.org/img/w/"+getWeather.icon+".png";
 
             this.setState({
                 icon: icon,
@@ -173,7 +204,9 @@ class App extends React.Component {
                 fullDescr: fullDescr,
                 quit: quit,
                 tempMin: tempMin,
-                tempMax: tempMax
+                tempMax: tempMax,
+                sunrise: sunriseString,
+                sunset: sunsetString
             });
             
         })
