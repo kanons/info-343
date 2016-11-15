@@ -122,10 +122,10 @@ class App extends React.Component {
         var alert = document.getElementById("search-alert");
         
         if(typeof location === 'number'){
-            var url = "https://www.bell-towne.com/api/weather?zip="+location+"&units=imperial&appid="+API_KEY;
+            var url = "https://www.bell-towne.com/api/weather?zip={"+location+"}&units=imperial&appid="+API_KEY;
             var quit = false;
         }else{
-            var url = "https://www.bell-towne.com/api/weather?q=" +location+"&units=imperial&appid="+ API_KEY;
+            var url = "https://www.bell-towne.com/api/weather?q={"+location+"}&units=imperial&appid="+ API_KEY;
             var quit = false;
         }
 
