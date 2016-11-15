@@ -13,7 +13,7 @@ class CurrentWeather extends React.Component {
                 <h2>{this.props.name}</h2>
                     <img src={this.props.icon} />
                     <p className="descr"><span>{this.props.fullDescr}</span></p>
-                    <h2 className="temp">{this.props.temp}<span className="max">High: {this.props.tempMax}<span>Low: {this.props.tempMin}</span></span></h2>
+                    <h3 className="temp">{this.props.temp}<span className="max">Max: {this.props.tempMax}<span>Min: {this.props.tempMin}</span></span></h3>
                     
 
                 <button id="save-button" className="btn btn-default" onClick={(e) => this.save(e)}>Save</button>
