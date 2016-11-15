@@ -1,13 +1,17 @@
 class CurrentWeather extends React.Component {   
     render() {
-        if(!this.props.queryValue && this.props.saved && !this.props.quit){
+
+        // If nothing is searched, a location is saved, and it is the first load, display location
+        if(!this.props.queryValue && this.props.saved && !this.props.quit) {
             this.props.firstSaving();
         }
 
+        // If no name is set yet, return null
         if(!this.props.name){
             return null;
         }
 
+        // Return the weather information display
         return (
             <div className="current-display">
                 <h2>{this.props.name}</h2>
@@ -21,6 +25,7 @@ class CurrentWeather extends React.Component {
         );
     }
 
+    // Save the location if button is clicked
     save(e) {
         this.props.onSave(this.props.queryValue);
     }
