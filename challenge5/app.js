@@ -64,11 +64,7 @@ class App extends React.Component {
         );
     }
 
-    change(e) {
-        e.preventDefault();
-        
-    }
-
+    // Get the first location in saved locations
     firstSaved() {
         if(this.state.saved.length!=0){
             var savedArray = JSON.parse(localStorage.getItem('savedLocations'));
@@ -110,7 +106,6 @@ class App extends React.Component {
         for(var i=0; i<savedArray.length; i++) {
             if(savedArray[i] === location) {
                 savedArray.splice(i,1);
-                //window.localStorage.removeItem('savedLocations', savedArray[i]);
             }
             
         }
@@ -122,10 +117,10 @@ class App extends React.Component {
         var alert = document.getElementById("search-alert");
         
         if(typeof location === 'number'){
-            var url = "https://www.bell-towne.com/api/weather?zip={"+location+"}&units=imperial&appid="+API_KEY;
+            var url = "https://www.bell-towne.com/api/weather/?zip={"+location+"}&units=imperial&appid="+API_KEY;
             var quit = false;
         }else{
-            var url = "https://www.bell-towne.com/api/weather?q={"+location+"}&units=imperial&appid="+ API_KEY;
+            var url = "https://www.bell-towne.com/api/weather/?q={"+location+"}&units=imperial&appid="+ API_KEY;
             var quit = false;
         }
 
