@@ -63,11 +63,7 @@ class App extends React.Component {
         );
     }
 
-<<<<<<< HEAD
     // Get the first location in saved locations
-=======
-    // Gets first location in saved locations
->>>>>>> react-challenge
     firstSaved() {
         if(this.state.saved.length!=0) {
             var savedArray = JSON.parse(localStorage.getItem('savedLocations'));
@@ -121,11 +117,8 @@ class App extends React.Component {
         if(typeof location === 'number'){
             var url = "https://www.bell-towne.com/api/weather/?zip={"+location+"}&units=imperial&appid="+API_KEY;
             var quit = false;
-<<<<<<< HEAD
-        }else{
-=======
+
         }else {
->>>>>>> react-challenge
             var url = "https://www.bell-towne.com/api/weather/?q={"+location+"}&units=imperial&appid="+ API_KEY;
             var quit = false;
         }
