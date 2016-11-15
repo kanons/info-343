@@ -23,9 +23,9 @@ class App extends React.Component {
     render() {
         return (
             <div className="weather-page">
-                    <div className="heading">
-                        <h1>Weather Watch</h1>
-                    </div>
+                <div className="heading">
+                    <h1>Weather Watch</h1>
+                </div>
                 <div className="row">  
                     <div className="col-md-6 col-xs-12" id="current-weather">
                         <SearchWeather
@@ -62,6 +62,11 @@ class App extends React.Component {
             </div>
         </div>
         );
+    }
+
+    change(e) {
+        e.preventDefault();
+        
     }
 
     firstSaved() {
@@ -117,10 +122,10 @@ class App extends React.Component {
         var alert = document.getElementById("search-alert");
         
         if(typeof location === 'number'){
-            var url = "api.openweathermap.org/data/2.5/weather?zip={"+location+"}&appid="+API_KEY;
+            var url = "api.openweathermap.org/data/2.5/weather?zip={"+location+"}&units=imperial&appid="+API_KEY;
             var quit = false;
         }else{
-            var url = "http://api.openweathermap.org/data/2.5/weather?q={" +location+"}&appid="+ API_KEY;
+            var url = "http://api.openweathermap.org/data/2.5/weather?q={" +location+"}&units=imperial&appid="+ API_KEY;
             var quit = false;
         }
 
@@ -143,17 +148,11 @@ class App extends React.Component {
 
             var name = json.name;
 
-            var farenheit = ((getMain.temp)*(9/5))- 459.67;
+            var temp = Math.ceil(((getMain.temp)/100)*100)+"°F";
 
-            var temp = Math.ceil(((farenheit)/100)*100)+"°F";
+            var tempMin = Math.ceil(((getMain.temp_min)/100)*100)+"°F";
 
-            var farenheitMin = ((getMain.temp_min)*(9/5))- 459.67;
-
-            var tempMin = Math.ceil(((farenheitMin)/100)*100)+"°F";
-
-            var farenheitMax = ((getMain.temp_max)*(9/5))- 459.67;
-
-            var tempMax = Math.ceil(((farenheitMax)/100)*100)+"°F";
+            var tempMax = Math.ceil(((getMain.temp_max)/100)*100)+"°F";
 
             var main = getWeather.main;
 
