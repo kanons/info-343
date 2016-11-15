@@ -8,6 +8,7 @@ class SearchWeather extends React.Component {
         )
     }
 
+    // On search, display weather for location
     searching(e) {
         e.preventDefault();
         var queryValue = this.refs.query.value;

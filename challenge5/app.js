@@ -37,7 +37,6 @@ class App extends React.Component {
                                     saved={this.state.saved}
                                     firstSaving={() => this.firstSaved()}
                                     quit={this.state.quit}
-
                                     name={this.state.name}
                                     queryValue={this.state.queryValue}
                                     icon={this.state.icon}
@@ -64,9 +63,13 @@ class App extends React.Component {
         );
     }
 
+<<<<<<< HEAD
     // Get the first location in saved locations
+=======
+    // Gets first location in saved locations
+>>>>>>> react-challenge
     firstSaved() {
-        if(this.state.saved.length!=0){
+        if(this.state.saved.length!=0) {
             var savedArray = JSON.parse(localStorage.getItem('savedLocations'));
             var firstSaved = savedArray[0];
             this.searchLocation(firstSaved);
@@ -94,7 +97,6 @@ class App extends React.Component {
             saved: saved
         });
         
-        // Save to local storage
         var savedJson = JSON.stringify(saved);
         localStorage.setItem('savedLocations', savedJson);
     }
@@ -107,7 +109,6 @@ class App extends React.Component {
             if(savedArray[i] === location) {
                 savedArray.splice(i,1);
             }
-            
         }
         localStorage.setItem("savedLocations", JSON.stringify(savedArray));
     }
@@ -116,27 +117,32 @@ class App extends React.Component {
     searchLocation(location) {
         var alert = document.getElementById("search-alert");
         
+        // Check if input is zip code or city
         if(typeof location === 'number'){
             var url = "https://www.bell-towne.com/api/weather/?zip={"+location+"}&units=imperial&appid="+API_KEY;
             var quit = false;
+<<<<<<< HEAD
         }else{
+=======
+        }else {
+>>>>>>> react-challenge
             var url = "https://www.bell-towne.com/api/weather/?q={"+location+"}&units=imperial&appid="+ API_KEY;
             var quit = false;
         }
 
-        if(quit){
+        // Used when displaying firstSaved location so it displays only once
+        if(quit) {
             return;
-        }else{
+        }else {
             quit=true;
         }
         
         fetch(url)
         .then((response) => {
-            
             return response.json();
         })
         .then((json) => {
-            
+
             var getWeather = json.weather[0];
 
             var getMain = json.main;
@@ -180,10 +186,10 @@ class App extends React.Component {
             
         })
         .catch((error) => {
-            if(!location){
+            if(!location) {
                 alert.classList.add('active');
                 alert.textContent="Invalid Location";
-            }else{
+            }else {
                 alert.classList.add('active');
                 alert.textContent=error;
             }
