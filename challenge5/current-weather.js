@@ -1,22 +1,13 @@
 class CurrentWeather extends React.Component {   
     render() {
-<<<<<<< HEAD
 
-        // If nothing is searched, a location is saved, and it is the first load, display location
-=======
         // If user did not search on page load, but has saved locations, display first saved location
->>>>>>> react-challenge
         if(!this.props.queryValue && this.props.saved && !this.props.quit) {
             this.props.firstSaving();
         }
 
-<<<<<<< HEAD
-        // If no name is set yet, return null
-        if(!this.props.name){
-=======
         // If location name is null, don't display anything
         if(!this.props.name) {
->>>>>>> react-challenge
             return null;
         }
 
@@ -32,11 +23,7 @@ class CurrentWeather extends React.Component {
         );
     }
 
-<<<<<<< HEAD
-    // Save the location if button is clicked
-=======
     // Save location on button click
->>>>>>> react-challenge
     save(e) {
         this.props.onSave(this.props.queryValue);
     }
